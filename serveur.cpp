@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
 	adresse_serveur.sin_addr.s_addr = htonl(INADDR_ANY);
 
 
-	// TODO use setsockopt
 	int yes = 1;
     	if (setsockopt(fd_serveur, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))
             == -1)
@@ -35,15 +34,10 @@ int main(int argc, char* argv[])
 
 	for (;;) // exit: CTRL+C
 	{
-		// useless?
-		// struct sockaddr_in adresse_client;
-		// socklen_t taille_adresse_client = sizeof(adresse_client.sin_addr);
-
 		int fd_client = accept(fd_serveur, NULL, NULL);
 
 		for (;;)
 		{
-			// TODO exit if "Bye"
 			std::string message_client;
 			char buffer[BUFFER_SIZE];
 
