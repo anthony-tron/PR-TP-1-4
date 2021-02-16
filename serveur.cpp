@@ -22,6 +22,10 @@ int main(int argc, char* argv[])
 
 
 	// TODO use setsockopt
+	int yes = 1;
+    	if (setsockopt(fd_serveur, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))
+            == -1)
+        	return -109;
 
 	if (bind(fd_serveur, (struct sockaddr*)&adresse_serveur, sizeof(sockaddr_in)) == -1)
 		return -101;
@@ -64,7 +68,16 @@ int main(int argc, char* argv[])
 			}
 
 			std::cout << message_client << std::endl;
+			if (message_client == "bye")
+				break;
 
+			std::string message_serveur;
+			std::cout << "> ";
+			getline(std::cin, message_serveur);
+			if (message_serveur.back() != '\n')
+				message_serveur	+= '\n';
+
+			write(fd_client, message_serveur.c_str(), message_serveur.length());
 		}
 
 		close (fd_client);
